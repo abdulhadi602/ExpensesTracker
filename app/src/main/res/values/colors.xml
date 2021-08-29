@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <item name="Crayolas_blue" type="color">#147efb</item>
+    <item name="white" type="color">#FFFFFF</item>
+    <item name="Crayolas_lightblue" type="color">#70A6FF</item>
+    <item name="Crayolas_lighterblue" type="color">#E2EDFB</item>
+    <item name="Black" type="color">#464646</item>
+</resources>
