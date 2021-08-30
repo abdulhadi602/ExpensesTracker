@@ -2,46 +2,56 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_margin="10dp"
-    android:padding="20dp"
+
 
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/itemName"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:ems="4"
-        android:maxLines="2"
-        android:text="Channel Name"
+        android:padding="20dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/cardview_shadow_colored"
+        android:weightSum="4"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/deleteBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/itemPrice"
+
+        <TextView
+            android:id="@+id/itemName"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+
+            android:gravity="center"
+
+            android:text="Item Name"
+            />
+        <TextView
+            android:id="@+id/itemPrice"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="1000.0"
+             />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/deleteBtn"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="2"
-        android:text="Channel Reward"
+        app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintStart_toEndOf="@+id/itemName"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        style="@style/Divider"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="20dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.609"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemName" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/add"
+        android:src="@drawable/ic_delete_black_24dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

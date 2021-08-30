@@ -1,27 +1,35 @@
 package com.example.expensestracker
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.expensestracker.Repositories.Entitiy.Item
 import com.example.expensestracker.Repositories.RoomRepo
+import com.example.expensestracker.Utils.AlertState
+import com.example.expensestracker.Utils.ItemAlert
 import com.example.expensestracker.ViewModels.ItemViewModel
 import com.example.skyjobtest.Activities.ItemsAdapter
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 
 class MainActivity : AppCompatActivity() {
-private lateinit var iteViewModel : ItemViewModel
+private lateinit var itemViewModel : ItemViewModel
     private lateinit var roomRepo: RoomRepo
-    private lateinit var addItemBtn : Button
-    private lateinit var deleteBtn : Button
-    private lateinit var todaysItems : Button
+    private lateinit var addItemBtn : FloatingActionButton
+    private lateinit var deleteItems :FloatingActionButton
+
 
     private lateinit var itemssRecyclerView: RecyclerView
+    private lateinit var expenseNavBar : BottomNavigationView
     lateinit var rewardsAdapter: ItemsAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,9 +37,9 @@ private lateinit var iteViewModel : ItemViewModel
         setContentView(R.layout.activity_main)
         roomRepo = RoomRepo(applicationContext)
         addItemBtn = findViewById(R.id.addItem)
-        deleteBtn = findViewById(R.id.deleteItem)
-        todaysItems = findViewById(R.id.todaysItems)
-        iteViewModel = ItemViewModel(roomRepo)
+        expenseNavBar = findViewById(R.id.expenseNavBar)
+        deleteItems = findViewById(R.id.deleteItems)
+        itemViewModel = ItemViewModel(roomRepo)
 
 
         itemssRecyclerView = findViewById(R.id.ItemList)
@@ -40,29 +48,49 @@ private lateinit var iteViewModel : ItemViewModel
 
         itemssRecyclerView.setLayoutManager(linearLayoutManager)
         itemssRecyclerView.setHasFixedSize(true)
-        rewardsAdapter = ItemsAdapter( this)
+        rewardsAdapter = ItemsAdapter(this,ItemHandler)
         itemssRecyclerView.adapter = rewardsAdapter
-        iteViewModel.currentItemsList.observe(this, Observer {
-
+        itemViewModel.currentItemsList.observe(this, Observer {
             rewardsAdapter.setrewardsList(it)
-              Log.d("NewData",it.toString())
+            Log.d("NewData", it.toString())
         })
-        var c = 1.0
-        addItemBtn.setOnClickListener(View.OnClickListener {
-            iteViewModel.setNewItem(Item("Test",c))
-            c++
-        })
-        deleteBtn.setOnClickListener(View.OnClickListener {
-            iteViewModel.deleteAll()
-        })
-        todaysItems.setOnClickListener(View.OnClickListener {
-            iteViewModel.requestTodaysItems()
-        })
-        iteViewModel.requestAll()
+        deleteItems.setOnClickListener {
+            itemViewModel.deleteAll()
+        }
+        addItemBtn.setOnClickListener {
+         ItemAlert(this, ItemHandler,AlertState.ADD,null).show()
+        }
+        expenseNavBar.setOnNavigationItemSelectedListener(navListener)
+
+        itemViewModel.requestTodaysItems()
     }
 
     override fun onResume() {
         super.onResume()
-        iteViewModel.requestAll()
+        itemViewModel.requestAll()
     }
+    val ItemHandler = object:  Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            val item : Item = msg.obj as Item
+            when(msg.what){
+                1 ->  itemViewModel.setNewItem(item)
+                -1 -> itemViewModel.deleteItem(item)
+                0 -> itemViewModel.updateItem(item)
+            }
+
+        }
+    }
+    var navListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.CurrentItems -> {
+                    itemViewModel.requestTodaysItems()
+                }
+                R.id.HistoricalItems -> {
+                    itemViewModel.requestAll()
+                }
+
+            }
+
+            true
+        }
 }

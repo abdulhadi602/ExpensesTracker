@@ -2,7 +2,7 @@ package com.example.expensestracker.Repositories
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import com.example.expensestracker.DateUtils
+import com.example.expensestracker.Utils.DateUtils
 import com.example.expensestracker.Repositories.Entitiy.Item
 
 import com.example.expensestracker.Repositories.Interface.ItemDao
@@ -13,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 
 class RoomRepo(context: Context) : Repo {
     var itemDao : ItemDao
@@ -58,19 +57,18 @@ class RoomRepo(context: Context) : Repo {
             override fun onActive() {
                 super.onActive()
                 CoroutineScope(Dispatchers.IO).launch {
-                    val result = itemDao.getTodaysItems(DateUtils.getStartOfDayInMillis(),DateUtils.getEndOfDayInMillis())
+                    val result = itemDao.getTodaysItems(
+                        DateUtils.getStartOfDayInMillis(),
+                        DateUtils.getEndOfDayInMillis())
                     withContext(Main){
                         value = result
                     }
-
                 }
             }
         }
     }
 
     override fun deleteAllItems() :LiveData<List<Item>>{
-
-
         return object : LiveData<List<Item>>(){
             override fun onActive() {
                 super.onActive()
@@ -78,6 +76,51 @@ class RoomRepo(context: Context) : Repo {
                   val job1 = launch {
                       itemDao.deleteItems()
                   }
+                    job1.join()
+                    val result = itemDao.getTodaysItems(
+                        DateUtils.getStartOfDayInMillis(),
+                        DateUtils.getEndOfDayInMillis())
+                    withContext(Main){
+                        value = result
+                    }
+                }
+            }
+
+        }
+
+
+
+    }
+
+    override fun updateItem(item: Item):LiveData<List<Item>> {
+        return object : LiveData<List<Item>>(){
+            override fun onActive() {
+                super.onActive()
+                CoroutineScope(Dispatchers.IO).launch {
+                    val job1 = launch {
+                        itemDao.updateItem(item)
+                    }
+                    job1.join()
+                    val result = itemDao.getTodaysItems(
+                        DateUtils.getStartOfDayInMillis(),
+                        DateUtils.getEndOfDayInMillis())
+                    withContext(Main){
+                        value = result
+                    }
+                }
+            }
+
+        }
+    }
+
+    override fun deleteItem(item: Item): LiveData<List<Item>> {
+        return object : LiveData<List<Item>>(){
+            override fun onActive() {
+                super.onActive()
+                CoroutineScope(Dispatchers.IO).launch {
+                    val job1 = launch {
+                        itemDao.deleteItem(item)
+                    }
                     job1.join()
                     val result = itemDao.getItems()
                     withContext(Main){
@@ -87,9 +130,6 @@ class RoomRepo(context: Context) : Repo {
             }
 
         }
-
-
-
     }
 
 

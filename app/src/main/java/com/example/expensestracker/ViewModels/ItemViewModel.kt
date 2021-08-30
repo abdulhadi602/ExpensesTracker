@@ -18,6 +18,8 @@ class ItemViewModel(repo : Repo)  : ViewModel() {
              ItemState.ADD_ITEM -> repository.addItem(newItem)
              ItemState.SHOW_TODAYS_LIST -> repository.getTodaysItems()
              ItemState.SHOW_ALL ->  repository.getAllItems()
+             ItemState.UPDATE_ITEM -> repository.updateItem(newItem)
+             ItemState.DELETE_ITEM -> repository.deleteItem(newItem)
              else -> repository.deleteAllItems()
 
          }
@@ -35,10 +37,20 @@ class ItemViewModel(repo : Repo)  : ViewModel() {
     fun deleteAll(){
         state.value = ItemState.DELETE_ALL
     }
+    fun updateItem(item: Item){
+        newItem = item
+        state.value = ItemState.UPDATE_ITEM
+    }
+    fun deleteItem(item: Item){
+        newItem = item
+        state.value = ItemState.DELETE_ITEM
+    }
 }
 enum class ItemState{
     ADD_ITEM,
     SHOW_TODAYS_LIST,
     SHOW_ALL,
-    DELETE_ALL
+    UPDATE_ITEM,
+    DELETE_ALL,
+    DELETE_ITEM
 }

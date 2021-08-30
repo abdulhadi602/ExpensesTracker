@@ -1,8 +1,6 @@
 package com.example.expensestracker.Repositories.Interface
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.expensestracker.Repositories.Entitiy.Item
 import java.util.*
 
@@ -20,5 +18,11 @@ interface ItemDao{
 
     @Query("SELECT * from items_table WHERE date BETWEEN :startDate AND :finishDate")
     suspend fun getTodaysItems(startDate: Long,finishDate : Long) : List<Item>
+
+    @Update
+    suspend fun updateItem(item: Item)
+
+    @Delete
+    suspend fun deleteItem(item: Item)
 
 }

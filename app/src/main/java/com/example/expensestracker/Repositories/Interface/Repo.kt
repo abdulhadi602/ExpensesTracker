@@ -10,4 +10,6 @@ interface Repo {
     fun getAllItems(): LiveData<List<Item>>
     fun getTodaysItems() : LiveData<List<Item>>
     fun deleteAllItems() : LiveData<List<Item>>
+    fun updateItem(item: Item) : LiveData<List<Item>>
+    fun deleteItem(item: Item) : LiveData<List<Item>>
 }

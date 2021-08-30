@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Expenses Tracker</string>
+    <string name="item_name">Item name</string>
+    <string name="price">Price</string>
+    <string name="enter_item">Enter item</string>
+    <string name="add">Add</string>
+    <string name="current">Current</string>
+    <string name="previous">Previous</string>
+    <string name="delete">delete</string>
+    <string name="update">udpate</string>
+    <string name="Please_enter_item_name">Please enter item name</string>
+    <string name="Please_enter_price">Please enter price</string>
+    <string name="Are_you_sure_you_want_to_delete_this_item">Are you sure you want to delete this item</string>
+    <string name="Updating_item">Updating Item</string>
 </resources>

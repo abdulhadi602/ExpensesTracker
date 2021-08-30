@@ -9,17 +9,9 @@ import java.util.*
 @Entity(tableName = "items_table")
 
 
- class Item{
+ class Item(var itemName: String, var itemPrice: Double) {
     @PrimaryKey(autoGenerate = true)
     var id : Int = 0
-    var itemName : String
-    var itemPrice : Double = 0.0
     @TypeConverters(DateConverter::class)
     var date : Date = Date()
-    constructor(itemName: String, itemPrice: Double){
-          this.itemName = itemName
-        this.itemPrice = itemPrice
-    }
-
-
 }
