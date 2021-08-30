@@ -3,7 +3,6 @@ package com.example.expensestracker.Repositories.Entitiy
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.expensestracker.Repositories.DateConverter
 import java.util.*
 
 @Entity(tableName = "items_table")

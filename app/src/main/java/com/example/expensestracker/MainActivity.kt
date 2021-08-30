@@ -7,6 +7,8 @@ import android.os.Message
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,15 +28,19 @@ private lateinit var itemViewModel : ItemViewModel
     private lateinit var roomRepo: RoomRepo
     private lateinit var addItemBtn : FloatingActionButton
     private lateinit var deleteItems :FloatingActionButton
-
-
     private lateinit var itemssRecyclerView: RecyclerView
     private lateinit var expenseNavBar : BottomNavigationView
     lateinit var rewardsAdapter: ItemsAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var totalAmmount : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        toolbar = findViewById(R.id.ExtendedLookup_toolbar)
+        setSupportActionBar(toolbar)
+        getSupportActionBar()?.setDisplayShowTitleEnabled(false)
+        totalAmmount = toolbar.findViewById(R.id.TotalMoney)
         roomRepo = RoomRepo(applicationContext)
         addItemBtn = findViewById(R.id.addItem)
         expenseNavBar = findViewById(R.id.expenseNavBar)
@@ -52,6 +58,7 @@ private lateinit var itemViewModel : ItemViewModel
         itemssRecyclerView.adapter = rewardsAdapter
         itemViewModel.currentItemsList.observe(this, Observer {
             rewardsAdapter.setrewardsList(it)
+            totalAmmount.setText(it.getTotal().toString())
             Log.d("NewData", it.toString())
         })
         deleteItems.setOnClickListener {
@@ -68,6 +75,13 @@ private lateinit var itemViewModel : ItemViewModel
     override fun onResume() {
         super.onResume()
         itemViewModel.requestAll()
+    }
+    fun  List<Item>.getTotal() : Double{
+        var total = 0.0
+        for (item in this){
+            total += item.itemPrice
+        }
+        return total
     }
     val ItemHandler = object:  Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {

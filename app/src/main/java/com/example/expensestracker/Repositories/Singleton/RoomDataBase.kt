@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.example.expensestracker.Repositories.DateConverter
 import com.example.expensestracker.Repositories.Entitiy.Item
 import com.example.expensestracker.Repositories.Interface.ItemDao
 

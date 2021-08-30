@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
 
 
-    android:background="@drawable/cardview"
+    android:background="@drawable/cardview_shadow_colored_gradient"
     android:layout_height="wrap_content">
 
     <LinearLayout

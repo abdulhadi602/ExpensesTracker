@@ -1,4 +1,4 @@
-package com.example.expensestracker.Repositories
+package com.example.expensestracker.Repositories.Entitiy
 
 import androidx.room.TypeConverter
 import java.util.*
