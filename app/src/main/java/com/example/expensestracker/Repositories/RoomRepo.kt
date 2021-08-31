@@ -2,12 +2,14 @@ package com.example.expensestracker.Repositories
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import com.example.expensestracker.Models.NAV_STATE
 import com.example.expensestracker.Utils.DateUtils
 import com.example.expensestracker.Repositories.Entitiy.Item
 
 import com.example.expensestracker.Repositories.Interface.ItemDao
 import com.example.expensestracker.Repositories.Interface.Repo
 import com.example.expensestracker.Repositories.Singleton.RoomDataBase
+import com.example.expensestracker.Static.StaticData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Main
@@ -25,7 +27,14 @@ class RoomRepo(context: Context) : Repo {
                super.onActive()
                CoroutineScope(Dispatchers.IO).launch {
                    itemDao.InsertItem(item)
-                   val result = itemDao.getItems()
+                   var result : List<Item> = ArrayList()
+                   when(StaticData.navState){
+                       NAV_STATE.CURRENT_ITEMS -> result = itemDao.getTodaysItems(
+                           DateUtils.getStartOfDayInMillis(),
+                           DateUtils.getEndOfDayInMillis())
+                       NAV_STATE.HISTORICAL_ITEMS -> result = itemDao.getItems()
+                   }
+
                    withContext(Main){
                        value = result
                    }
@@ -77,9 +86,13 @@ class RoomRepo(context: Context) : Repo {
                       itemDao.deleteItems()
                   }
                     job1.join()
-                    val result = itemDao.getTodaysItems(
-                        DateUtils.getStartOfDayInMillis(),
-                        DateUtils.getEndOfDayInMillis())
+                    var result : List<Item> = ArrayList()
+//                    when(StaticData.navState){
+//                        NAV_STATE.CURRENT_ITEMS -> result = itemDao.getTodaysItems(
+//                            DateUtils.getStartOfDayInMillis(),
+//                            DateUtils.getEndOfDayInMillis())
+//                        NAV_STATE.HISTORICAL_ITEMS -> result = itemDao.getItems()
+//                    }
                     withContext(Main){
                         value = result
                     }
@@ -101,9 +114,13 @@ class RoomRepo(context: Context) : Repo {
                         itemDao.updateItem(item)
                     }
                     job1.join()
-                    val result = itemDao.getTodaysItems(
-                        DateUtils.getStartOfDayInMillis(),
-                        DateUtils.getEndOfDayInMillis())
+                    var result : List<Item> = ArrayList()
+                    when(StaticData.navState){
+                        NAV_STATE.CURRENT_ITEMS -> result = itemDao.getTodaysItems(
+                            DateUtils.getStartOfDayInMillis(),
+                            DateUtils.getEndOfDayInMillis())
+                        NAV_STATE.HISTORICAL_ITEMS -> result = itemDao.getItems()
+                    }
                     withContext(Main){
                         value = result
                     }
@@ -122,7 +139,13 @@ class RoomRepo(context: Context) : Repo {
                         itemDao.deleteItem(item)
                     }
                     job1.join()
-                    val result = itemDao.getItems()
+                    var result : List<Item> = ArrayList()
+                    when(StaticData.navState){
+                        NAV_STATE.CURRENT_ITEMS -> result = itemDao.getTodaysItems(
+                            DateUtils.getStartOfDayInMillis(),
+                            DateUtils.getEndOfDayInMillis())
+                        NAV_STATE.HISTORICAL_ITEMS -> result = itemDao.getItems()
+                    }
                     withContext(Main){
                         value = result
                     }

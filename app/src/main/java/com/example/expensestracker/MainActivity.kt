@@ -13,9 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.expensestracker.Models.NAV_STATE
 import com.example.expensestracker.Repositories.Entitiy.Item
 import com.example.expensestracker.Repositories.RoomRepo
+import com.example.expensestracker.Static.StaticData
 import com.example.expensestracker.Utils.AlertState
+import com.example.expensestracker.Utils.DateUtils
 import com.example.expensestracker.Utils.ItemAlert
 import com.example.expensestracker.ViewModels.ItemViewModel
 import com.example.skyjobtest.Activities.ItemsAdapter
@@ -69,12 +72,17 @@ private lateinit var itemViewModel : ItemViewModel
         }
         expenseNavBar.setOnNavigationItemSelectedListener(navListener)
 
+        expenseNavBar.selectedItemId = R.id.CurrentItems
         itemViewModel.requestTodaysItems()
     }
 
     override fun onResume() {
         super.onResume()
-        itemViewModel.requestAll()
+        when(StaticData.navState){
+            NAV_STATE.CURRENT_ITEMS -> itemViewModel.requestTodaysItems()
+            NAV_STATE.HISTORICAL_ITEMS -> itemViewModel.requestAll()
+        }
+
     }
     fun  List<Item>.getTotal() : Double{
         var total = 0.0
@@ -98,9 +106,11 @@ private lateinit var itemViewModel : ItemViewModel
             when (item.itemId) {
                 R.id.CurrentItems -> {
                     itemViewModel.requestTodaysItems()
+                    StaticData.navState = NAV_STATE.CURRENT_ITEMS
                 }
                 R.id.HistoricalItems -> {
                     itemViewModel.requestAll()
+                    StaticData.navState = NAV_STATE.HISTORICAL_ITEMS
                 }
 
             }
@@ -108,3 +118,4 @@ private lateinit var itemViewModel : ItemViewModel
             true
         }
 }
+

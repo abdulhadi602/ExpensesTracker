@@ -17,8 +17,7 @@ import com.example.expensestracker.Utils.ItemAlert
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class ItemsAdapter(con: Context,handler: Handler) :
-    RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
+class ItemsAdapter(con: Context,handler: Handler) : RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
     var itemList: List<Item> = ArrayList()
     var con: Context
     val handler : Handler
