@@ -15,7 +15,6 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/toolbar_gradiant"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -41,7 +40,7 @@
                 android:layout_width="wrap_content"
 
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_attach_money_black_24dp"
+                app:srcCompat="@drawable/ic_attach_money_black_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/TotalMoney"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -66,12 +65,13 @@
         android:id="@id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/cardview_shadow_colored"
-        app:layout_constraintBottom_toTopOf="@+id/expenseNavBar"
+        android:orientation="vertical"
+
+        app:layout_constraintBottom_toBottomOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ExtendedLookup_toolbar">
@@ -80,8 +80,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ItemList"
             android:layout_width="match_parent"
-            android:layout_marginRight="10dp"
             android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
             android:padding="20dp"
 
             app:layout_constraintBottom_toTopOf="@+id/expenseNavBar"
@@ -89,30 +89,85 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
     </LinearLayout>
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/expenseNavBar"
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/toolbar_gradiant"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:itemTextColor="@color/white"
-        app:itemIconTint="@color/white"
-        app:menu="@menu/expense_navitems" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="20dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:contentDescription="@string/add"
-        android:src="@drawable/ic_add_black_24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent" />
+        tools:context=".MainActivity">
+
+
+
+        <!--the normal Floating action button which is
+            anchored to the bottom navigation button-->
+
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            android:backgroundTint="@color/colorPrimary"
+
+            app:backgroundTint="@android:color/transparent"
+            app:fabCradleMargin="10dp"
+            app:fabCradleRoundedCornerRadius="10dp"
+            app:fabCradleVerticalOffset="5dp"
+
+            >
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/expenseNavBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+                app:menu="@menu/expense_navitems"
+                app:itemTextColor="@color/white"
+                app:itemIconTint="@color/white"/>
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            app:layout_anchor="@id/bottomAppBar"
+            android:contentDescription="@string/add"
+            app:srcCompat="@drawable/ic_add_black_24dp"
+            />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+    <!--        android:id="@+id/expenseNavBar"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="56dp"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:background="@drawable/toolbar_gradiant"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:itemTextColor="@color/white"-->
+    <!--        app:itemIconTint="@color/white"-->
+    <!--        app:menu="@menu/expense_navitems" />-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/addItem"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="end|bottom"-->
+    <!--        android:layout_margin="20dp"-->
+    <!--        android:backgroundTint="@color/colorPrimary"-->
+    <!--        android:contentDescription="@string/add"-->
+    <!--        android:src="@drawable/ic_add_black_24dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent" />-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/deleteItems"
@@ -123,7 +178,7 @@
         android:visibility="gone"
         android:backgroundTint="@color/colorPrimary"
         android:contentDescription="@string/delete"
-        android:src="@drawable/ic_delete_black_24dp"
+        app:srcCompat="@drawable/ic_delete_black_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
