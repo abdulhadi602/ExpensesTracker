@@ -5,6 +5,8 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.expensestracker.R
@@ -21,7 +23,7 @@ class ItemsAdapter(con: Context, handler: Handler) : RecyclerView.Adapter<ItemsA
     var itemList: List<Item> = ArrayList()
     var con: Context
     val handler : Handler
-    var lastDateItem: Date? =null
+
     init {
         this.handler = handler
         this.con = con
@@ -56,21 +58,23 @@ class ItemsAdapter(con: Context, handler: Handler) : RecyclerView.Adapter<ItemsA
 
     }
     fun checkDate(pointer : Int,holder : ViewHolder,item : Item){
-//        if(pointer == 0){
-//            lastDateItem == null
-//        }
-//        if(lastDateItem!= null){
-//            if(lastDateItem!! isDateDifferent item.date){
-//                holder.itemDate.visibility = View.VISIBLE
-//                holder.itemDate.text = item.date.formatDate()
-//            }
-//        }
-        holder.itemDate.visibility = View.VISIBLE
-        holder.itemDate.text = item.date.formatDate()
-       // lastDateItem = item.date
+        var lastItemDate: Date?
+        if(pointer>0){
+            lastItemDate = itemList[pointer-1].date
+            if(lastItemDate isDifferentFrom item.date){
+                holder.itemDateLayout.visibility = View.VISIBLE
+                holder.itemDate.text = item.date.formatDate()
+            }else{
+                holder.itemDateLayout.visibility = View.GONE
+            }
+        }else{
+            holder.itemDateLayout.visibility = View.VISIBLE
+            holder.itemDate.text = item.date.formatDate()
+        }
+
     }
-    infix fun Date.isDateDifferent(itemDate: Date) : Boolean{
-        return this.formatDate().equals(itemDate.formatDate())
+    infix fun Date.isDifferentFrom(itemDate: Date) : Boolean{
+        return !this.formatDate().equals(itemDate.formatDate())
     }
     fun Date.formatDate() : String{
         val sdf = SimpleDateFormat("dd MMM yyy", Locale.getDefault())
@@ -83,8 +87,9 @@ class ItemsAdapter(con: Context, handler: Handler) : RecyclerView.Adapter<ItemsA
 
         var itemName: TextView
         var itemPrice: TextView
-        var deleteBtn : FloatingActionButton
+        var deleteBtn : Button
         var itemDate : TextView
+        var itemDateLayout : LinearLayout
 
 
         init {
@@ -93,6 +98,7 @@ class ItemsAdapter(con: Context, handler: Handler) : RecyclerView.Adapter<ItemsA
             this.itemPrice = itemView.findViewById(R.id.itemPrice)
             this.deleteBtn = itemView.findViewById(R.id.deleteBtn)
             this.itemDate = itemView.findViewById(R.id.itemDate)
+            this.itemDateLayout = itemView.findViewById(R.id.itemDateLayout)
         }
 
 
