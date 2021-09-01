@@ -27,9 +27,11 @@ class ItemsAdapter(con: Context, handler: Handler) : RecyclerView.Adapter<ItemsA
     init {
         this.handler = handler
         this.con = con
+
     }
     fun setrewardsList(list: List<Item>){
         this.itemList = list
+
         notifyDataSetChanged()
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,7 +48,10 @@ class ItemsAdapter(con: Context, handler: Handler) : RecyclerView.Adapter<ItemsA
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val temp = itemList[position]
+
+        checkisDayChanging(position,holder,temp)
         checkDate(position,holder,temp)
+
         holder.itemName.text = temp.itemName
         holder.itemPrice.text = temp.itemPrice.toString()
         holder.itemView.setOnClickListener {
@@ -57,8 +62,42 @@ class ItemsAdapter(con: Context, handler: Handler) : RecyclerView.Adapter<ItemsA
         }
 
     }
+    fun checkisDayChanging(pointer : Int,holder : ViewHolder,item : Item){
+        var nextItemDate: Date?
+        if(pointer<itemList.size-1){
+            nextItemDate = itemList[pointer+1].date
+            if(nextItemDate isDifferentFrom item.date){
+                holder.totalMoneyForDay.visibility = View.VISIBLE
+
+               holder.totalMoneyForDay.text ="Total : ${itemList.findDataByDay(item.date).findDaysTotal()}"
+
+            }else{
+                holder.totalMoneyForDay.visibility = View.GONE
+            }
+        }else{
+            holder.totalMoneyForDay.visibility = View.VISIBLE
+            holder.totalMoneyForDay.text ="Total : ${itemList.findDataByDay(item.date).findDaysTotal()}"
+
+        }
+    }
+    fun List<Item>.findDataByDay(date : Date): List<Item>{
+        val list : ArrayList<Item> = ArrayList()
+        for(item in this){
+            if(item.date isSameAs  date ){
+              list.add(item)
+            }
+        }
+        return list
+    }
+    fun List<Item>.findDaysTotal() : Double{
+        var total = 0.0
+        for(item in this){
+            total+=item.itemPrice
+        }
+        return total
+    }
     fun checkDate(pointer : Int,holder : ViewHolder,item : Item){
-        var lastItemDate: Date?
+        val lastItemDate: Date?
         if(pointer>0){
             lastItemDate = itemList[pointer-1].date
             if(lastItemDate isDifferentFrom item.date){
@@ -72,6 +111,9 @@ class ItemsAdapter(con: Context, handler: Handler) : RecyclerView.Adapter<ItemsA
             holder.itemDate.text = item.date.formatDate()
         }
 
+    }
+    infix fun Date.isSameAs(itemDate: Date) : Boolean{
+        return this.formatDate().equals(itemDate.formatDate())
     }
     infix fun Date.isDifferentFrom(itemDate: Date) : Boolean{
         return !this.formatDate().equals(itemDate.formatDate())
@@ -90,6 +132,7 @@ class ItemsAdapter(con: Context, handler: Handler) : RecyclerView.Adapter<ItemsA
         var deleteBtn : Button
         var itemDate : TextView
         var itemDateLayout : LinearLayout
+        var totalMoneyForDay : TextView
 
 
         init {
@@ -99,6 +142,7 @@ class ItemsAdapter(con: Context, handler: Handler) : RecyclerView.Adapter<ItemsA
             this.deleteBtn = itemView.findViewById(R.id.deleteBtn)
             this.itemDate = itemView.findViewById(R.id.itemDate)
             this.itemDateLayout = itemView.findViewById(R.id.itemDateLayout)
+            this.totalMoneyForDay = itemView.findViewById(R.id.totalMoneyForDay)
         }
 
 

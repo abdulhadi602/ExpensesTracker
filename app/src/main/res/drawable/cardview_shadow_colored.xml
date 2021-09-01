@@ -4,7 +4,7 @@
 
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:left="6dp" android:top="6dp">
+    <item android:left="6dp" android:top="12dp">
         <shape android:shape="rectangle">
 
             <gradient
@@ -12,11 +12,24 @@
                 android:endColor="@color/Crayolas_lighterblue"
                 android:angle="270"/>
 
-            <corners android:radius="14dp" />
+            <corners android:topRightRadius="14dp" android:topLeftRadius="14dp" />
 
         </shape>
     </item>
-    <item      android:right="6dp" >
+    <item  android:right="9dp" android:top="7dp" android:left="8dp">
+        <shape android:shape="rectangle">
+
+            <gradient
+                android:startColor="@color/colorPrimary"
+                android:endColor="@color/Pink"
+                android:angle="-270"
+                />
+
+            <corners android:topRightRadius="14dp" android:topLeftRadius="14dp" />
+
+        </shape>
+    </item>
+    <item      android:right="10dp" android:top="8dp" android:left="8dp" >
         <shape
             android:shape="rectangle">
             <solid android:color="@color/white"/>

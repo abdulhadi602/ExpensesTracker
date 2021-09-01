@@ -55,7 +55,7 @@
                 android:gravity="center"
                 android:text="120000.9"
                 android:textColor="@color/white"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -78,11 +78,7 @@
         android:background="@drawable/cardview_shadow_colored"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:padding="20dp"
-
-        app:layout_constraintBottom_toTopOf="@+id/expenseNavBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+     />
 
 
 
@@ -98,7 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/toolbar_gradiant"
         android:backgroundTint="@color/colorPrimary"
         app:hideOnScroll="true"
         app:backgroundTint="@android:color/transparent"
@@ -125,7 +121,9 @@
         android:id="@+id/addItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
+
+        android:backgroundTint="@color/Pink"
+        app:backgroundTint="@color/Pink"
         app:layout_anchor="@id/bottomAppBar"
         android:contentDescription="@string/add"
         app:srcCompat="@drawable/ic_add_black_24dp"
